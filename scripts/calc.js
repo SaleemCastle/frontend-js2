@@ -1,8 +1,8 @@
-let displayValue = '0';
-let firstOperand = null;
-let secondOperand = null;
-let firstOperator = null;
-let secondOperator = null;
+let display_val = '0';
+let operand_1 = null;
+let operand_2 = null;
+let operator_1 = null;
+let operator_2 = null;
 let result = null;
 const buttons = document.querySelectorAll('button');
 
@@ -13,9 +13,9 @@ window.addEventListener('keydown', function(e){
 
 function updateDisplay() {
     const display = document.getElementById('display');
-    display.innerText = displayValue;
-    if(displayValue.length > 9) {
-        display.innerText = displayValue.substring(0, 9);
+    display.innerText = display_val;
+    if(display_val.length > 9) {
+        display.innerText = display_val.substring(0, 9);
     }
 }
   
@@ -35,11 +35,11 @@ function clickButton() {
             } else if(buttons[i].classList.contains('decimal')) {
                 inputToDisplay(buttons[i].value)
                 updateDisplay();
-            } else if(buttons[i].classList.contains('percent')) {
-                inputPercent(displayValue);
+            } else if(buttons[i].classList.contains('undo')) {
+                inputUndo(display_val);
                 updateDisplay();
             } else if(buttons[i].classList.contains('sign')) {
-                inputSign(displayValue);
+                inputSign(display_val);
                 updateDisplay();
             } else if(buttons[i].classList.contains('clear'))
                 clearDisplay();
@@ -51,60 +51,60 @@ clickButton();
 
 
 function inputOperator(operator) {
-    if(firstOperator != null && secondOperator === null) {
-        //4th click - handles input of 2nd operator
-        secondOperator = operator;
-        secondOperand = displayValue;
-        result = operate(Number(firstOperand), Number(secondOperand), firstOperator);
-        displayValue = roundAccurately(result, 15).toString();
-        firstOperand = displayValue;
-        result = null;
-    } else if(firstOperator != null && secondOperator != null) {
-        //6th click - new secondOperator
-        secondOperand = displayValue;
-        result = operate(Number(firstOperand), Number(secondOperand), secondOperator);
-        secondOperator = operator;
-        displayValue = roundAccurately(result, 15).toString();
-        firstOperand = displayValue;
-        result = null;
-    } else { 
-        //2nd click - handles first operator input
-        firstOperator = operator;
-        firstOperand = displayValue;
-    }
+  if(operator_1 != null && operator_2 === null) {
+      // fourth click - input of 2nd operator handling
+      operator_2 = operator;
+      operand_2 = display_val;
+      result = operate(Number(operand_1), Number(operand_2), operator_1);
+      display_val = roundAccurately(result, 15).toString();
+      operand_1 = display_val;
+      result = null;
+  } else if(operator_1 != null && operator_2 != null) {
+      // sixth click - new operator_2
+      operand_2 = display_val;
+      result = operate(Number(operand_1), Number(operand_2), operator_2);
+      operator_2 = operator;
+      display_val = roundAccurately(result, 15).toString();
+      operand_1 = display_val;
+      result = null;
+  } else { 
+      // Second click - first operator input handling
+      operator_1 = operator;
+      operand_1 = display_val;
+  }
 }
 
 
 function inputEquals() {
-    //hitting equals doesn't display undefined before operate()
-    if(firstOperator === null) {
-        displayValue = displayValue;
-    } else if(secondOperator != null) {
-        //handles final result
-        secondOperand = displayValue;
-        result = operate(Number(firstOperand), Number(secondOperand), secondOperator);
+    // Do not display undefined before operate() when hitting equals
+    if(operator_1 === null) {
+        display_val = display_val;
+    } else if(operator_2 != null) {
+        // Final result handling
+        operand_2 = display_val;
+        result = operate(Number(operand_1), Number(operand_2), operator_2);
         if(result === 'error') {
-            displayValue = 'error';
+            display_val = 'error';
         } else {
-            displayValue = roundAccurately(result, 15).toString();
-            firstOperand = displayValue;
-            secondOperand = null;
-            firstOperator = null;
-            secondOperator = null;
+            display_val = roundAccurately(result, 15).toString();
+            operand_1 = display_val;
+            operand_2 = null;
+            operator_1 = null;
+            operator_2 = null;
             result = null;
         }
     } else {
-        //handles first operation
-        secondOperand = displayValue;
-        result = operate(Number(firstOperand), Number(secondOperand), firstOperator);
+        // First operation handling
+        operand_2 = display_val;
+        result = operate(Number(operand_1), Number(operand_2), operator_1);
         if(result === 'error') {
-            displayValue = 'error';
+            display_val = 'error';
         } else {
-            displayValue = roundAccurately(result, 15).toString();
-            firstOperand = displayValue;
-            secondOperand = null;
-            firstOperator = null;
-            secondOperator = null;
+            display_val = roundAccurately(result, 15).toString();
+            operand_1 = display_val;
+            operand_2 = null;
+            operator_1 = null;
+            operator_2 = null;
             result = null;
         }
     }
@@ -114,61 +114,66 @@ function inputEquals() {
 function inputToDisplay(input_type){
 
   if (input_type === "."){
-    if(displayValue === firstOperand || displayValue === secondOperand) {
-        displayValue = '0';
-        displayValue += input_type;
-    } else if(!displayValue.includes(input_type)) {
-        displayValue += input_type;
+    if(display_val === operand_1 || display_val === operand_2) {
+      display_val = '0';
+      display_val += input_type;
+    } else if(!display_val.includes(input_type)) {
+        display_val += input_type;
     } 
   }
   else if (typeof(parseInt(input_type)) === "number"){
-    if(firstOperator === null) {
-        if(displayValue === '0' || displayValue === 0) {
-            //1st click - handles first operand input
-            displayValue = input_type;
-        } else if(displayValue === firstOperand) {
-            //starts new operation after inputEquals()
-            displayValue = input_type;
-        } else {
-            displayValue += input_type;
-        }
+    if(operator_1 === null) {
+      if(display_val === '0' || display_val === 0) {
+          // First click - handling first operand input
+          display_val = input_type;
+      } else if(display_val === operand_1) {
+          // Starts new operation after inputEquals()
+          display_val = input_type;
+      } else {
+          display_val += input_type;
+      }
     } else {
-        //3rd/5th click - inputs to secondOperand
-        if(displayValue === firstOperand) {
-            displayValue = input_type;
+        // third and fifth click - inputs to operand_2
+        if(display_val === operand_1) {
+            display_val = input_type;
         } else {
-            displayValue += input_type;
+            display_val += input_type;
         }
     }
   }
 
 }
 
-function inputPercent(num) {
-    displayValue = (num/100).toString();
+function inputUndo(num) {
+  display_val = '0';
+  //operand_1 = null;
+  //operand_2 = null;
+  //operator_1 = null;
+  //operator_2 = null;
+  //result = null;
 }
 
 function inputSign(num) {
-    displayValue = (num * -1).toString();
+    display_val = (num * -1).toString();
 }
 
 function clearDisplay() {
-    displayValue = '0';
-    firstOperand = null;
-    secondOperand = null;
-    firstOperator = null;
-    secondOperator = null;
+    display_val = '0';
+    operand_1 = null;
+    operand_2 = null;
+    operator_1 = null;
+    operator_2 = null;
     result = null;
 }
 
 function inputBackspace() {
-    if(firstOperand != null) {
-        firstOperand = null;
+    if(operand_1 != null) {
+        operand_1 = null;
         updateDisplay();
     }
 }
 
-const basicOperations = {
+const basic_operations = {
     add: function(input1, input2) {
         return input1 + input2
     },
@@ -184,7 +189,7 @@ const basicOperations = {
 }
 
 function operate(num1, num2, operator) {
-    const { add, subtract, multiply, divide } = basicOperations;
+    const { add, subtract, multiply, divide } = basic_operations;
     switch(operator) {
     case '+':
         return add(num1, num2);
