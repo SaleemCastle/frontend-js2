@@ -166,13 +166,6 @@ function clearDisplay() {
     result = null;
 }
 
-function inputBackspace() {
-    if(operand_1 != null) {
-        operand_1 = null;
-        updateDisplay();
-    }
-}
-
 const basic_operations = {
     add: function(input1, input2) {
         return input1 + input2
