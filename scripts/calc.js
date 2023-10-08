@@ -51,27 +51,27 @@ clickButton();
 
 
 function inputOperator(operator) {
-  if(firstOperator != null && secondOperator === null) {
-      //4th click - handles input of 2nd operator
-      secondOperator = operator;
-      secondOperand = displayValue;
-      result = operate(Number(firstOperand), Number(secondOperand), firstOperator);
-      displayValue = roundAccurately(result, 15).toString();
-      firstOperand = displayValue;
-      result = null;
-  } else if(firstOperator != null && secondOperator != null) {
-      //6th click - new secondOperator
-      secondOperand = displayValue;
-      result = operate(Number(firstOperand), Number(secondOperand), secondOperator);
-      secondOperator = operator;
-      displayValue = roundAccurately(result, 15).toString();
-      firstOperand = displayValue;
-      result = null;
-  } else { 
-      //2nd click - handles first operator input
-      firstOperator = operator;
-      firstOperand = displayValue;
-  }
+    if(firstOperator != null && secondOperator === null) {
+        //4th click - handles input of 2nd operator
+        secondOperator = operator;
+        secondOperand = displayValue;
+        result = operate(Number(firstOperand), Number(secondOperand), firstOperator);
+        displayValue = roundAccurately(result, 15).toString();
+        firstOperand = displayValue;
+        result = null;
+    } else if(firstOperator != null && secondOperator != null) {
+        //6th click - new secondOperator
+        secondOperand = displayValue;
+        result = operate(Number(firstOperand), Number(secondOperand), secondOperator);
+        secondOperator = operator;
+        displayValue = roundAccurately(result, 15).toString();
+        firstOperand = displayValue;
+        result = null;
+    } else { 
+        //2nd click - handles first operator input
+        firstOperator = operator;
+        firstOperand = displayValue;
+    }
 }
 
 
@@ -113,26 +113,25 @@ function inputEquals() {
 
 function inputToDisplay(input_type){
 
-  console.log(input_type);
   if (input_type === "."){
     if(displayValue === firstOperand || displayValue === secondOperand) {
-      displayValue = '0';
-      displayValue += input_type;
+        displayValue = '0';
+        displayValue += input_type;
     } else if(!displayValue.includes(input_type)) {
         displayValue += input_type;
     } 
   }
   else if (typeof(parseInt(input_type)) === "number"){
     if(firstOperator === null) {
-      if(displayValue === '0' || displayValue === 0) {
-          //1st click - handles first operand input
-          displayValue = input_type;
-      } else if(displayValue === firstOperand) {
-          //starts new operation after inputEquals()
-          displayValue = input_type;
-      } else {
-          displayValue += input_type;
-      }
+        if(displayValue === '0' || displayValue === 0) {
+            //1st click - handles first operand input
+            displayValue = input_type;
+        } else if(displayValue === firstOperand) {
+            //starts new operation after inputEquals()
+            displayValue = input_type;
+        } else {
+            displayValue += input_type;
+        }
     } else {
         //3rd/5th click - inputs to secondOperand
         if(displayValue === firstOperand) {
@@ -146,7 +145,7 @@ function inputToDisplay(input_type){
 }
 
 function inputPercent(num) {
-  displayValue = (num/100).toString();
+    displayValue = (num/100).toString();
 }
 
 function inputSign(num) {
@@ -169,27 +168,37 @@ function inputBackspace() {
     }
 }
 
+const basicOperations = {
+    add: function(input1, input2) {
+        return input1 + input2
+    },
+    subtract: function(input1, input2) {
+        return input1 - input2
+    },
+    multiply: function(input1, input2) {
+        return input1 * input2
+    },
+    divide: function(input1, input2) {
+        return input1 / input2
+    }
+}
+
 function operate(num1, num2, operator) {
-
-  switch(operator) {
+    const { add, subtract, multiply, divide } = basicOperations;
+    switch(operator) {
     case '+':
-      return num1 + num2;
-      break;
+        return add(num1, num2);
     case '-':
-      return num1 - num2;
-      break;
+        return subtract(num1, num2);
     case '*':
-      return num1 * num2;
-      break;
+        return multiply(num1, num2);
     case '/':
-      if(num2 === 0) {
+        if(num2 === 0) {
         return 'error';
-      } else {
-        return num1 / num2;
-      }
-      break;
-  } 
-
+        } else {
+        return divide(num1, num2);
+        }
+    } 
 }
 
 function roundAccurately(num, places) {
