@@ -11,7 +11,7 @@ const data_keys = ['Period', 'Enter', 'Backspace', 'Slash','Delete', 'Digit0','D
 window.addEventListener(
     "keydown",
     (event) => {
-      console.log("Event code: "+event.code)
+      //console.log("Event code: "+event.code)
       let key = null
       if (numpad_keys.includes(event.code) ){
         key = document.querySelector(`button[numpad-key='${event.code}']`);
@@ -70,7 +70,7 @@ function inputOperator(operator) {
       operator_2 = operator;
       operand_2 = display_val;
       result = operate(Number(operand_1), Number(operand_2), operator_1);
-      display_val = roundAccurately(result, 15).toString();
+      display_val = roundAccurately(result, 5).toString();
       operand_1 = display_val;
       result = null;
   } else if(operator_1 != null && operator_2 != null) {
@@ -78,7 +78,7 @@ function inputOperator(operator) {
       operand_2 = display_val;
       result = operate(Number(operand_1), Number(operand_2), operator_2);
       operator_2 = operator;
-      display_val = roundAccurately(result, 15).toString();
+      display_val = roundAccurately(result, 5).toString();
       operand_1 = display_val;
       result = null;
   } else { 
@@ -100,7 +100,7 @@ function inputEquals() {
         if(result === 'error') {
             display_val = 'error';
         } else {
-            display_val = roundAccurately(result, 15).toString();
+            display_val = roundAccurately(result, 5).toString();
             operand_1 = display_val;
             operand_2 = null;
             operator_1 = null;
@@ -114,7 +114,7 @@ function inputEquals() {
         if(result === 'error') {
             display_val = 'error';
         } else {
-            display_val = roundAccurately(result, 15).toString();
+            display_val = roundAccurately(result, 5).toString();
             operand_1 = display_val;
             operand_2 = null;
             operator_1 = null;
