@@ -35,8 +35,8 @@ function clickButton() {
             } else if(buttons[i].classList.contains('decimal')) {
                 inputToDisplay(buttons[i].value)
                 updateDisplay();
-            } else if(buttons[i].classList.contains('percent')) {
-                inputPercent(displayValue);
+            } else if(buttons[i].classList.contains('undo')) {
+                inputUndo(displayValue);
                 updateDisplay();
             } else if(buttons[i].classList.contains('sign')) {
                 inputSign(displayValue);
@@ -145,8 +145,13 @@ function inputToDisplay(input_type){
 
 }
 
-function inputPercent(num) {
-  displayValue = (num/100).toString();
+function inputUndo(num) {
+  displayValue = '0';
+  //firstOperand = null;
+  //secondOperand = null;
+  //firstOperator = null;
+  //secondOperator = null;
+  //result = null;
 }
 
 function inputSign(num) {
