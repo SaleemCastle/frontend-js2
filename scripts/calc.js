@@ -116,8 +116,9 @@ function handleUndoClick() {
 }
 
 function updateDisplay() {
-    display.textContent = displayVal;
-}
+    let truncatedDisplay = displayVal.slice(0, 10);
+    display.textContent = roundAccurately(truncatedDisplay, 5);
+  }
 
 function calculate(num1, num2, op) {
     switch (op) {
@@ -135,4 +136,8 @@ function calculate(num1, num2, op) {
         default:
             return num2;
     }
+}
+
+function roundAccurately(num, places) {
+    return parseFloat(Math.round(num + 'e' + places) + 'e-' + places);
 }
