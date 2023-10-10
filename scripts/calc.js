@@ -118,21 +118,37 @@ function handleUndoClick() {
 function updateDisplay() {
     let truncatedDisplay = displayVal.slice(0, 10);
     display.textContent = roundAccurately(truncatedDisplay, 5);
-  }
+}
+
+const basic_operations = {
+    add: function(input1, input2) {
+        return input1 + input2
+    },
+    subtract: function(input1, input2) {
+        return input1 - input2
+    },
+    multiply: function(input1, input2) {
+        return input1 * input2
+    },
+    divide: function(input1, input2) {
+        return input1 / input2
+    }
+}
 
 function calculate(num1, num2, op) {
+    const { add, divide, multiply, subtract } = basic_operations;
     switch (op) {
         case "+":
-            return num1 + num2;
+            return add(num1, num2);
         case "-":
-            return num1 - num2;
+            return subtract(num1, num2);
         case "*":
-            return num1 * num2;
+            return multiply(num1, num2);
         case "/":
             if (num2 === 0) {
                 return "Error";
             }
-            return num1 / num2;
+            return divide(num1, num2);
         default:
             return num2;
     }
